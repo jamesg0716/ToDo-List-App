@@ -1,17 +1,25 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.BufferedReader;
 
 public class ToDoAppGUI {
     private DefaultListModel<String> listModel;
     private JList<String> list1;
+    private ListModel<String> taskList;
 
     public void createAndShowGUI() {
+        listModel = new DefaultListModel<>();
+        loadDataFromFile();
+
         JFrame frame = new JFrame("Todo List");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 600);
 
-        listModel = new DefaultListModel<>();
         list1 = new JList<>(listModel);
+        taskList = list1.getModel();
 
         JScrollPane scrollPane = new JScrollPane(list1);
         list1.setFixedCellHeight(25);
@@ -39,6 +47,7 @@ public class ToDoAppGUI {
         if (newTask != null && !newTask.isEmpty()) {
             listModel.addElement(newTask);
         }
+        saveDataToFile();
     }
 
     private void removeButtonClicked() {
@@ -46,12 +55,38 @@ public class ToDoAppGUI {
         if (index != -1) {
             listModel.remove(index);
         }
+        saveDataToFile();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            ToDoAppGUI app = new ToDoAppGUI();
-            app.createAndShowGUI();
-        });
+    private void saveDataToFile() {
+        try {
+            FileWriter taskWriter = new FileWriter("data.txt");
+            taskWriter.write("");
+            for (int i = 0; i < taskList.getSize(); i++) {
+                String ithTask = taskList.getElementAt(i);
+                taskWriter.write(ithTask + "\n");
+            }
+            taskWriter.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadDataFromFile() {
+        try {
+            FileReader taskReader = new FileReader("data.txt");
+            BufferedReader read = new BufferedReader(taskReader);
+            String line;
+
+            while((line = read.readLine()) != null) {
+                listModel.addElement(line);
+            }
+            read.close();
+            taskReader.close();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 }
