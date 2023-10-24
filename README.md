@@ -11,6 +11,7 @@ This is a simple To-Do List application developed in Java using the Swing librar
 
 - **Add Tasks:** You can add tasks by clicking the "Add a Task" button and entering the task's description.
 - **Remove Tasks:** You can remove tasks by selecting a task from the list and clicking the "Remove Task" button.
+- **Edit Tasks:** You can change preexisting tasks by selecting them and then clicking the edit task button.
 - **Data Persistence:** The tasks are stored in a text file ("data.txt"), so they will be saved even if you close the application.
 
 ## How to Run
