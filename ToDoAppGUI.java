@@ -28,27 +28,35 @@ public class ToDoAppGUI {
         JButton addButton = new JButton("Add a Task");
         JButton removeButton = new JButton("Remove Task");
         JButton clearButton = new JButton("Clear All");
+        JButton editButton = new JButton("Edit Task");
 
-        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); 
+        JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        JPanel northPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
         southPanel.add(addButton); 
         southPanel.add(removeButton); 
         southPanel.add(clearButton);
+        northPanel.add(editButton);
 
         frame.setLayout(new BorderLayout());
         frame.add(scrollPane, BorderLayout.CENTER);
         frame.add(southPanel, BorderLayout.SOUTH); 
+        frame.add(northPanel, BorderLayout.NORTH);
         frame.setVisible(true);
 
         addButton.addActionListener(e -> addButtonClicked());
         removeButton.addActionListener(e -> removeButtonClicked());
         clearButton.addActionListener(e -> clearButtonClicked());
+        editButton.addActionListener(e -> editButtonClicked());
     }
 
     private void addButtonClicked() {
         String newTask = JOptionPane.showInputDialog("Enter a task: ");
         if (newTask != null && !newTask.isEmpty()) {
             listModel.addElement(newTask);
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Task cannot be empty", "Error", JOptionPane.ERROR_MESSAGE);
         }
         saveDataToFile();
     }
@@ -65,6 +73,22 @@ public class ToDoAppGUI {
         listModel.clear();
         saveDataToFile();
     }
+
+    private void editButtonClicked() {
+        int index = list1.getSelectedIndex();
+        if (index != -1) {
+            String newTask = JOptionPane.showInputDialog("Enter a task: ");
+            if (newTask != null && !newTask.isEmpty()) {
+                listModel.set(index, newTask);
+                saveDataToFile();
+            } else {
+                JOptionPane.showMessageDialog(null, "Task description cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else { 
+            JOptionPane.showMessageDialog(null, "Select a task to edit.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
 
     private void saveDataToFile() {
         try {
