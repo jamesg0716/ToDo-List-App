@@ -27,11 +27,13 @@ public class ToDoAppGUI {
 
         JButton addButton = new JButton("Add a Task");
         JButton removeButton = new JButton("Remove Task");
+        JButton clearButton = new JButton("Clear All");
 
         JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER)); 
 
         southPanel.add(addButton); 
         southPanel.add(removeButton); 
+        southPanel.add(clearButton);
 
         frame.setLayout(new BorderLayout());
         frame.add(scrollPane, BorderLayout.CENTER);
@@ -40,6 +42,7 @@ public class ToDoAppGUI {
 
         addButton.addActionListener(e -> addButtonClicked());
         removeButton.addActionListener(e -> removeButtonClicked());
+        clearButton.addActionListener(e -> clearButtonClicked());
     }
 
     private void addButtonClicked() {
@@ -55,6 +58,11 @@ public class ToDoAppGUI {
         if (index != -1) {
             listModel.remove(index);
         }
+        saveDataToFile();
+    }
+
+    private void clearButtonClicked() {
+        listModel.clear();
         saveDataToFile();
     }
 
